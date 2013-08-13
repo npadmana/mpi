@@ -50,7 +50,7 @@ var (
 )
 
 var (
-	mpilong = C.mpitype(0)
+	mpi_i64 = C.mpitype(0)
 )
 
 // Initialize initializes the MPI environment
@@ -90,7 +90,7 @@ func Finalize() error {
 
 // AllReduceInt64 : MPI_Allreduce for int64
 func AllReduceInt64(comm Comm, in, out *int64, n int, op Op) {
-	C.MPI_Allreduce(unsafe.Pointer(&in), unsafe.Pointer(&out), C.int(n), op, mpilong, comm)
+	C.MPI_Allreduce(unsafe.Pointer(in), unsafe.Pointer(out), C.int(n), mpi_i64, SUM, comm)
 }
 
 // Abort calls MPI_Abort
