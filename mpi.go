@@ -41,12 +41,12 @@ import (
 	"unsafe"
 )
 
-type Comm C.MPI_Comm
-type Op C.MPI_Op
-type MpiType C.MPI_Datatype
+type Comm C.MPI_Comm        // MPI Communicators
+type Op C.MPI_Op            // MPI Optypes
+type MpiType C.MPI_Datatype // MPI Datatypes
 
 var (
-	SUM = Op(C.mpiop(0))
+	SUM = Op(C.mpiop(0)) // MPI_SUM
 )
 
 var (
