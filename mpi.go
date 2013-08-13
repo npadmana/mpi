@@ -103,7 +103,7 @@ func Abort(comm Comm, err int) error {
 }
 
 // Barrier calls MPI_Barrier
-func Barrier(comm Comm, err int) error {
+func Barrier(comm Comm) error {
 	perr := C.MPI_Barrier(comm)
 	if perr != 0 {
 		return errors.New("Error calling Barrier")
