@@ -42,13 +42,15 @@ import (
 )
 
 type Comm C.MPI_Comm
+type Op C.MPI_Op
+type MpiType C.MPI_Datatype
 
 var (
-	SUM = C.mpiop(0)
+	SUM = Op(C.mpiop(0))
 )
 
 var (
-	LONG = C.mpitype(0)
+	mpilong = C.mpitype(0)
 )
 
 // Initialize initializes the MPI environment
@@ -87,8 +89,8 @@ func Finalize() error {
 }
 
 // AllReduceInt64 : MPI_Allreduce for int64
-func AllReduceInt64(comm C.MPI_Comm, in, out *int64, n int, op C.MPI_Op) {
-	C.MPI_Allreduce(unsafe.Pointer(&in), unsafe.Pointer(&out), C.int(n), op, LONG, comm)
+func AllReduceInt64(comm Comm, in, out *int64, n int, op Op) {
+	C.MPI_Allreduce(unsafe.Pointer(&in), unsafe.Pointer(&out), C.int(n), op, mpilong, comm)
 }
 
 // Abort calls MPI_Abort
@@ -110,7 +112,7 @@ func Barrier(comm Comm, err int) error {
 }
 
 // Rank returns the MPI_Rank
-func Rank(comm Comm, err int) (int, error) {
+func Rank(comm Comm) (int, error) {
 	var r C.int
 	perr := C.MPI_Comm_rank(comm, &r)
 	if perr != 0 {
@@ -120,7 +122,7 @@ func Rank(comm Comm, err int) (int, error) {
 }
 
 // Size returns the MPI_Size
-func Size(comm Comm, err int) (int, error) {
+func Size(comm Comm) (int, error) {
 	var r C.int
 	perr := C.MPI_Comm_size(comm, &r)
 	if perr != 0 {
