@@ -50,7 +50,7 @@ var (
 )
 
 var (
-	mpi_i64 = C.mpitype(0)
+	MPI_i64 = MpiType(C.mpitype(0))
 )
 
 // Initialize initializes the MPI environment
@@ -90,7 +90,7 @@ func Finalize() error {
 
 // AllReduceInt64 : MPI_Allreduce for int64
 func AllReduceInt64(comm Comm, in, out *int64, n int, op Op) {
-	C.MPI_Allreduce(unsafe.Pointer(in), unsafe.Pointer(out), C.int(n), mpi_i64, SUM, comm)
+	C.MPI_Allreduce(unsafe.Pointer(in), unsafe.Pointer(out), C.int(n), MPI_i64, SUM, comm)
 }
 
 // Abort calls MPI_Abort
@@ -129,4 +129,11 @@ func Size(comm Comm) (int, error) {
 		return -1, errors.New("Error calling MPI_Comm_size")
 	}
 	return int(r), nil
+}
+
+// TypeSize returns the size of an MPI type
+func TypeSize(t1 MpiType) int {
+	var n C.int
+	C.MPI_Type_size(t1, &n)
+	return int(n)
 }
