@@ -93,6 +93,11 @@ func AllReduceInt64(comm Comm, in, out *int64, n int, op Op) {
 	C.MPI_Allreduce(unsafe.Pointer(in), unsafe.Pointer(out), C.int(n), MPI_i64, SUM, comm)
 }
 
+// AllGatherInt64 : MPI_Allgather for int64
+func AllGatherInt64(comm Comm, in, out []int64) {
+	C.MPI_Allgather(unsafe.Pointer(&in[0]), C.int(len(in)), MPI_i64, unsafe.Pointer(&out[0]), C.int(len(in)), MPI_i64, comm)
+}
+
 // Abort calls MPI_Abort
 func Abort(comm Comm, err int) error {
 	perr := C.MPI_Abort(comm, C.int(err))
